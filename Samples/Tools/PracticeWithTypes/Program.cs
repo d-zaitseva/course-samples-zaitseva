@@ -1,5 +1,6 @@
 ﻿using System;
 using Models;
+using Services;
 
 namespace PracticeWithTypes
 {
@@ -25,6 +26,12 @@ namespace PracticeWithTypes
             UpdateCurrencyCountry(ref ruRub, "Russian Ruble");
 
             Console.WriteLine($"Currency name after update - {ruRub.Name}");
+
+            Console.WriteLine();
+
+            Employee newEmployee = BankService.RecruitClient(new Client("S", "S"), "QA");
+            newEmployee.PrintPersonData();
+            Console.WriteLine(newEmployee.Position);
             Console.ReadLine();
         }
 
