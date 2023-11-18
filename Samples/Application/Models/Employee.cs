@@ -18,5 +18,7 @@
         {
             Salary = salary;
         }
+
+        public static implicit operator Employee(Client client) => new Employee(client.FirstName, client.LastName);
     }
 }
