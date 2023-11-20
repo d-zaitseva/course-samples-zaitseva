@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using Models;
 using Services;
 
@@ -8,30 +9,69 @@ namespace PracticeWithTypes
     {
         static void Main(string[] args)
         {
-            Employee employee = new Employee("Petr", "Ivanov", "C# developer");
-            Currency ruRub = new Currency("Ruble", "RUB");
-            string contract = $"Contract of {employee.FirstName} {employee.LastName} should be signed by the December, 1st";
+            var queueControl = new QueueControl(5);
 
-            UpdateEmployeeContract(employee, contract);
-            
-            Console.WriteLine();
-            //print employee name
-            employee.PrintPersonData();
-            Console.WriteLine(employee.Contract);
+            queueControl.Notify += PrintMessage;
+            queueControl.Enqueue("Tom");
+            queueControl.Enqueue("Bob");
+            queueControl.Enqueue("Sam");
+            queueControl.Enqueue("Bill");
+            queueControl.Enqueue("John");
 
-            Console.WriteLine();
+            queueControl.Enqueue("Shon");
+            queueControl.Enqueue("Ketty");
+            try
+            {
+                queueControl.Dequeue();
+                queueControl.Dequeue();
+                queueControl.Dequeue();
+                queueControl.Dequeue();
+            }
+            catch (NullReferenceException e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
 
-            Console.WriteLine($"Currency name before update - {ruRub.Name}");
-            //update currency name
-            UpdateCurrencyCountry(ref ruRub, "Russian Ruble");
+            queueControl.Clear();
 
-            Console.WriteLine($"Currency name after update - {ruRub.Name}");
+            void PrintMessage(string message)
+            {
+                Console.WriteLine(message);
+            }
 
-            Console.WriteLine();
+            //INotifyPropertyChanged
+            PropertyChangedEventHandler printOnPropertyChanged = delegate
+            {
+                Console.WriteLine("Position was changed");
+            };
 
-            Employee newEmployee = BankService.RecruitClient(new Client("S", "S"), "QA");
-            newEmployee.PrintPersonData();
-            Console.WriteLine(newEmployee.Position);
+            BindingList<Employee> employeeList = new BindingList<Employee>();
+            employeeList.Add(new Employee("Petr", "Ivanov"));
+            employeeList.Add(new Employee("Ivan", "Sidorov"));
+            employeeList.Add(new Employee("Vasiliy", "Pupkin"));
+
+            employeeList[0].PropertyChanged += printOnPropertyChanged;
+
+            employeeList[0].Position = "C# Developer";
+            employeeList[1].Position = "Java Developer";
+
+            NumberAnaliser na = new NumberAnaliser(20, 10);
+            na.Notify += PrintMessage;
+            int[] arr = new int[10];
+            Random random = new Random();
+            for (int i = 0; i < 10; i++)
+            {
+                arr[i] = random.Next(1, 50);
+            }
+
+            foreach (int i in arr)
+            {
+                na.AnalizeNumber(i);
+            }
             Console.ReadLine();
         }
 
