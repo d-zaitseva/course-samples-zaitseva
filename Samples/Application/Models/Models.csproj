@@ -45,8 +45,10 @@
     <Compile Include="Client.cs" />
     <Compile Include="Currency.cs" />
     <Compile Include="Employee.cs" />
+    <Compile Include="NumberAnaliser.cs" />
     <Compile Include="Person.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="QueueControl.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
